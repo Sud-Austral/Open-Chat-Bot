@@ -10,13 +10,8 @@ function getData(urlData) {
     let dataJson = rawData? JSON.parse(rawData): null;
     return dataJson;
 }
-
 const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
-
-
 const getIncisos = x => incisos[parseInt(x)][12];
-
-console.log(getIncisos("3"))
 
 function query2(requestBody){
     let salida = "error"
@@ -43,8 +38,6 @@ function query2(requestBody){
     return salida;
 }
 
-
-
 async function query(data) {
 	const response = await fetch(
 		"https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm",
@@ -70,12 +63,9 @@ const inputData2 = x => {
     }};
 
 
-
-
 function getBotResponse(input) {
     //return "Given the question delimited by triple backticks ```{jueces}```, what is the answer? Answer:{ Encontrado en los incisos:  223,333,468,469,471,476,478,484,490,494,497,498,500,503,505,508,509,510,511,512,35,65,247,461,488,520,528,543}"
     input = input.toLowerCase();
-    console.log(input)
     let inputData = inputData2(input)
 
     let salida = query2(inputData);
@@ -87,45 +77,7 @@ function getBotResponse(input) {
         acumulador++;
     }
     let lista_incisos = salida.split("Answer:{")[1].replace(/[^,\d]/g, '').split(",");
-    console.log(lista_incisos.map(getIncisos).join(" "))
+    
     //return salida.split("Answer:{")[1];
-    return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(",").replaceAll("Nº"," Inciso")
-    /*
-    query(inputData)
-    .then((response) => {
-        console.log(1,JSON.stringify(response));
-        //console.log(2,response[0]["generated_text"]);
-        inputData["inputs"] = response[0]["generated_text"];
-        salida = response[0]["generated_text"];
-    })
-    
-    setTimeout(function() {
-        // Tu código que se ejecutará después de 10 segundos
-        console.log(2,salida)
-        return salida;
-      }, 10000);
-    
-    */
-    /*
-    //rock paper scissors
-    if (input == "rock") {
-        return "paper";
-    } else if (input == "paper") {
-        return "scissors";
-    } else if (input == "scissors") {
-        return "rock";
-    }
-
-    // Simple responses
-    if(input == "hola"){
-        return "Pregunta otra cosa"
-    }
-    if (input == "hello") {
-        return "Hello there!";
-    } else if (input == "goodbye") {
-        return "Talk to you later!";
-    } else {
-        return "Try asking something else!";
-    }
-    */
+    return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(",").replaceAll("Nº"," Inciso");
 }
