@@ -56,7 +56,7 @@ function getBotResponse(input) {
 
     let salida = query2(inputData);
     let acumulador = 1;
-    while(salida.split("Answer:{")[1].indexOf("}") === -1 && acumulador < 20){
+    while(salida.split("Answer:{")[1].indexOf("}") === -1 && acumulador < 10){
         inputData["inputs"] = salida;
         salida = query2(inputData);
         console.log(acumulador,salida)
