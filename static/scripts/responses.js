@@ -1,5 +1,25 @@
+function getData(urlData) {
+    let rawData;
+    $.get({
+        url: urlData,
+        success: data => rawData = data, 
+        error: () => console.log("No File in " + urlData),       
+        async: false
+    });
+      
+    let dataJson = rawData? JSON.parse(rawData): null;
+    return dataJson;
+}
+
+const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
+
+
+const getIncisos = x => incisos[parseInt(x)][12];
+
+console.log(getIncisos("3"))
+
 function query2(requestBody){
-    let salida = ""
+    let salida = "error"
     $.ajax({
         url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm', // Reemplaza con la URL de la API que deseas consultar
         type: 'POST',
@@ -15,7 +35,9 @@ function query2(requestBody){
             //salida = data[0][generated_text];
         },
         error: function(xhr, status, error) {
-            console.error(error,xhr,status);
+            //console.error(error,xhr,status);
+            salida = xhr.responseJSON.error;
+            console.log(salida)
         }
     });
     return salida;
@@ -41,7 +63,9 @@ const inputData2 = x => {
     return {
     "inputs": "Given the question delimited by triple backticks ```{" + x +"}```, what is the answer? Answer:{ Encontrado en los incisos: ",
     "options": {
-    "max_length": 228 // Set the maximum response length to 128
+    //"max_length": 228 // Set the maximum response length to 128
+    'max_tokens': 2048,
+    'temperature': 0.2
         }
     }};
 
@@ -62,49 +86,10 @@ function getBotResponse(input) {
         console.log(acumulador,salida)
         acumulador++;
     }
-    
-    /*
-    console.log(1,salida)
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(2,salida)
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(3,salida)
-    
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(4,salida)
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(5,salida)
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(6,salida)
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(7,salida)
-
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(8,salida)
-
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(9,salida)
-
-
-    inputData["inputs"] = salida;
-    salida = query2(inputData);
-    console.log(10,salida)
-    */
-    return salida.split("Answer:{")[1];
-    
+    let lista_incisos = salida.split("Answer:{")[1].replace(/[^,\d]/g, '').split(",");
+    console.log(lista_incisos.map(getIncisos).join(" "))
+    //return salida.split("Answer:{")[1];
+    return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(",").replaceAll("Nº"," Inciso")
     /*
     query(inputData)
     .then((response) => {
