@@ -11,7 +11,7 @@ function getData(urlData) {
     return dataJson;
 }
 const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
-const getIncisos = x => incisos[parseInt(x)][12];
+const getIncisos = x => `<a href='detalle.html?id=${x}' target='_blank'>${incisos[parseInt(x)][12]}</a>`;
 
 function query2(requestBody){
     let salida = "error"
@@ -60,8 +60,8 @@ const inputData2 = x => {
     //'max_tokens': 2048,
     'temperature': 0,
     "repetition_penalty":1,
-    "top_p":1,
-    "top_k":1,
+    //"top_p":1,
+    //"top_k":100,
     "max_time":10
         }
     }};
@@ -74,20 +74,8 @@ function getBotResponse(input) {
     let salida = query2(inputData);
     let acumulador = 1;
     let contador = 0;
-    /*
-    while(salida.split("Answer:{")[1].indexOf("}") === -1 && acumulador < 30){
-        
-        inputData["inputs"] = salida;
-        salida = query2(inputData);
-        console.log(acumulador,salida)
-        acumulador++;
-    }
-    */
     let lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
-    //console.log(salida.split("Answer:{")[1])
-    console.log(salida)
-    //console.log(salida.split("Answer:{")[1])
-    //console.log(lista_incisos)
-    //return salida.split("Answer:{")[1];
+    lista_incisos = lista_incisos.filter(x => x !== "");
+    console.log(lista_incisos)
     return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(", ").replaceAll("Nº"," Inciso");
 }

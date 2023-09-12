@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página con Bootstrap</title>
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Detalle del Inciso</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Genera 15 filas -->
+                <tr>
+                    <td id="id1">Dato 1A</td>
+                </tr>
+                <tr>
+                    <td id="id2">Dato 2A</td>
+                </tr>
+                <tr>
+                    <td id="id3">Dato 3A</td>
+                </tr>
+                <tr>
+                    <td id="id4">Dato 4A</td>
+                </tr>
+                <tr>
+                    <td id="id5">Dato 5A</td>
+                </tr>
+                <tr>
+                    <td id="id6">Dato 6A</td>
+                </tr>
+                <tr>
+                    <td id="id7">Dato 7A</td>
+                </tr>
+                <tr>
+                    <td id="id8">Dato 8A</td>
+                </tr>
+                <tr>
+                    <td id="id9">Dato 9A</td>
+                </tr>
+                <tr>
+                    <td id="id10">Dato 10A</td>
+                </tr>
+                <tr>
+                    <td id="id11">Dato 11A</td>
+                </tr>
+                <tr>
+                    <td id="id12">Dato 12A</td>
+                </tr>
+                <tr>
+                    <td id="id13">Dato 13A</td>
+                </tr>
+                <tr>
+                    <td id="id14">Dato 14A</td>
+                </tr>
+                <tr>
+                    <td id="id15">Dato 15A</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    
+
+    <!-- Agrega el enlace a Bootstrap JS (opcional, para algunas funcionalidades de Bootstrap) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+function getData(urlData) {
+    let rawData;
+    $.get({
+        url: urlData,
+        success: data => rawData = data, 
+        error: () => console.log("No File in " + urlData),       
+        async: false
+    });
+      
+    let dataJson = rawData? JSON.parse(rawData): null;
+    return dataJson;
+    }
+    const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
+    const getIncisos = x => incisos[parseInt(x)];
+    function getParameterByName(name) {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(window.location.href);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Ejemplo de uso:
+    var id = getParameterByName('id');
+    console.log(getIncisos(id))
+    let inciso = getIncisos(id);
+    for (let index = 1; index < 16; index++) {
+        $("#id" + index).text(inciso[index - 1])    
+    }
+    </script>
+
+</body>
+</html>
+
