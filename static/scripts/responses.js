@@ -59,9 +59,9 @@ const inputData2 = x => {
     "max_length": 228, // Set the maximum response length to 128
     //'max_tokens': 2048,
     'temperature': 0,
-    "repetition_penalty":1,
-    //"top_p":1,
-    //"top_k":100,
+    "repetition_penalty":.8,
+    "top_p":1,
+    "top_k":100,
     "max_time":10
         }
     }};
