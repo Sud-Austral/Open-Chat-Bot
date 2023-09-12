@@ -103,10 +103,17 @@ function getData(urlData) {
     console.log(getIncisos(id))
     let inciso = getIncisos(id);
     for (let index = 1; index < 16; index++) {
+        
         $("#id" + index).text(inciso[index - 1])    
     }
     </script>
-
+    <style>
+        #id7 {
+            color: red;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
 </body>
 </html>
 
