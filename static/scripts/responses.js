@@ -56,7 +56,7 @@ const inputData2 = x => {
     return {
     "inputs": "Given the question delimited by triple backticks ```{" + x +"}```, what is the answer? Answer:{ Encontrado en los incisos: ",
     "parameters": {
-    "max_length": 128, // Set the maximum response length to 128
+    "max_length": 228, // Set the maximum response length to 128
     //'max_tokens': 2048,
     'temperature': 0,
     "repetition_penalty":1,
@@ -76,6 +76,10 @@ function getBotResponse(input) {
     let contador = 0;
     let lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
     lista_incisos = lista_incisos.filter(x => x !== "");
+    console.log(salida)
     console.log(lista_incisos)
+    if(lista_incisos.length == 0){
+        return "Aun estamos trabajando, peor no pudimos encontrar tu concepto..."
+    }
     return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(", ").replaceAll("Nº"," Inciso");
 }
