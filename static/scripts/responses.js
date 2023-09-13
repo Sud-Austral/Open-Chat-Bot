@@ -63,18 +63,27 @@ const inputData2 = x => {
     "parameters": {
     "max_length": 228, // Set the maximum response length to 128
     //'max_tokens': 2048,
+    /*
+    Parametros  Contitucion-15_lemm
     'temperature': 0,
     "repetition_penalty":.8,
     "top_p":1,
     "top_k":100,
     "max_time":10
+    Temperature: 1.0
+    Repetition penalty: 0.5
+    Top_p: 0.9
+    Top_k: 50
+    */
+    
         }
     }};
 
 
 const errores = {"Task not found for this model":"No se encontro el modelo",
-                "Model lmonsalve/Contitucion-15_lemm_tilde is currently loading":"El módelo se esta cargando"
-                }
+                "Model lmonsalve/Contitucion-15_lemm_tilde is currently loading":"El módelo se esta cargando",
+                "Model lmonsalve/Contitucion-15_lemm is currently loading":"El módelo se esta cargando"    
+            }
 
 
 function getBotResponse(input) {
@@ -83,10 +92,15 @@ function getBotResponse(input) {
     let inputData = inputData2(input);
     let salida = query2(inputData);
     let lista_incisos;
+    //console.log(salida.split("Answer:{")[1].split("}")[1].replace(/[^,\d]/g, '').split(","))
     try{
         lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
     }catch(error){
-        return errores[salida];
+        try {
+            lista_incisos = salida.split("Answer:{")[1].split("}")[1].replace(/[^,\d]/g, '').split(",");
+        } catch (error) {
+            return errores[salida];
+        }        
     }
     lista_incisos = lista_incisos.filter(x => x !== "");
     console.log(salida)
@@ -94,5 +108,6 @@ function getBotResponse(input) {
     if(lista_incisos.length == 0){
         return "Aun estamos trabajando, pero no pudimos encontrar tu concepto..."
     }
+
     return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(", ").replaceAll("Nº"," Inciso");
 }
