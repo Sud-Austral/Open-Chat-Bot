@@ -16,7 +16,8 @@ const getIncisos = x => `<a href='detalle.html?id=${x}' target='_blank'>${inciso
 function query2(requestBody){
     let salida = "error"
     $.ajax({
-        url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm', // Reemplaza con la URL de la API que deseas consultar
+        //url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm', // Reemplaza con la URL de la API que deseas consultar
+        url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm_tilde', 
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify(requestBody),
@@ -33,7 +34,11 @@ function query2(requestBody){
             //console.error(error,xhr,status);
             salida = xhr.responseJSON.error;
             console.log(salida)
-        }
+        },
+        /*
+        finally:function(){
+            salida = "error";
+        }*/
     });
     return salida;
 }
@@ -67,19 +72,27 @@ const inputData2 = x => {
     }};
 
 
+const errores = {"Task not found for this model":"No se encontro el modelo",
+                "Model lmonsalve/Contitucion-15_lemm_tilde is currently loading":"El módelo se esta cargando"
+                }
+
+
 function getBotResponse(input) {
     //return "Given the question delimited by triple backticks ```{jueces}```, what is the answer? Answer:{ Encontrado en los incisos:  223,333,468,469,471,476,478,484,490,494,497,498,500,503,505,508,509,510,511,512,35,65,247,461,488,520,528,543}"
     input = input.toLowerCase();
-    let inputData = inputData2(input)
+    let inputData = inputData2(input);
     let salida = query2(inputData);
-    let acumulador = 1;
-    let contador = 0;
-    let lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
+    let lista_incisos;
+    try{
+        lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
+    }catch(error){
+        return errores[salida];
+    }
     lista_incisos = lista_incisos.filter(x => x !== "");
     console.log(salida)
     console.log(lista_incisos)
     if(lista_incisos.length == 0){
-        return "Aun estamos trabajando, peor no pudimos encontrar tu concepto..."
+        return "Aun estamos trabajando, pero no pudimos encontrar tu concepto..."
     }
     return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(", ").replaceAll("Nº"," Inciso");
 }
