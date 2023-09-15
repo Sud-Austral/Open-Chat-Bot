@@ -59,7 +59,7 @@ async function query(data) {
 
 const inputData2 = x => { 
     return {
-    "inputs": "Given the question delimited by triple backticks ```{" + x +"}```, what is the answer? Answer:{ Encontrado en los incisos: ",
+    "inputs": "Given the question delimited by triple backticks ```{" + x +"}```, what is the answer? Answer:{ Encontrado en los incisos:",
     "parameters": {
     "max_length": 228, // Set the maximum response length to 128
     //'max_tokens': 2048,
@@ -84,7 +84,7 @@ const inputData2 = x => {
     //'top_k':30,
     //"top_p":.85,
     //"top_k":50,
-    "repetition_penalty":.6,
+    //"repetition_penalty":1.2,
     //'temperature': .7,
     }
 }};
