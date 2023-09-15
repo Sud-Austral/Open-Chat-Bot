@@ -170,3 +170,17 @@
         border-radius: 0px;
     }
 }
+
+.respuesta{
+    cursor: pointer;
+    font-size: .9rem;
+    color:rgb(255, 255, 255);
+}
+.respuesta:hover{
+    cursor: pointer;
+    font-size: 1rem;
+    color:rgb(210, 243, 205);
+}
+.respuesta_padre{
+    background-color: black;
+}

@@ -11,7 +11,7 @@ function getData(urlData) {
     return dataJson;
 }
 const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
-const getIncisos = x => `<a href='detalle.html?id=${x}' target='_blank'>${incisos[parseInt(x)][12]}</a>`;
+const getIncisos = x => `<div class="respuesta" onclick='renderIncisoTable(${x});'>${incisos[parseInt(x)][12]}</div>`;
 
 function query2(requestBody){
     let salida = "error"
@@ -74,10 +74,20 @@ const inputData2 = x => {
     Repetition penalty: 0.5
     Top_p: 0.9
     Top_k: 50
+    'temperature': 0.1,
+    "repetition_penalty":.6,
+    "top_p":.01,
+    "top_k":1,
     */
-    
-        }
-    }};
+    //"repetition_penalty":.7,
+    //"top_p":.3,
+    //'top_k':30,
+    //"top_p":.85,
+    //"top_k":50,
+    "repetition_penalty":.6,
+    //'temperature': .7,
+    }
+}};
 
 
 const errores = {"Task not found for this model":"No se encontro el modelo",
@@ -102,12 +112,12 @@ function getBotResponse(input) {
             return errores[salida];
         }        
     }
-    lista_incisos = lista_incisos.filter(x => x !== "");
+    lista_incisos = [...new Set(lista_incisos.filter(x => x !== ""))];
     console.log(salida)
     console.log(lista_incisos)
     if(lista_incisos.length == 0){
         return "Aun estamos trabajando, pero no pudimos encontrar tu concepto..."
     }
 
-    return "Ecnontrado en :"+lista_incisos.map(getIncisos).join(", ").replaceAll("Nº"," Inciso");
+    return "Encontrado en : <div class='respuesta_padre'>"+lista_incisos.map(getIncisos).join(" ").replaceAll("Nº"," Inciso")+"</div>";
 }
