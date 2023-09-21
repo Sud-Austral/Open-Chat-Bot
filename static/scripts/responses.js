@@ -1,3 +1,5 @@
+let GLOBALPALABRA = ""
+
 function getData(urlData) {
     let rawData;
     $.get({
@@ -11,7 +13,7 @@ function getData(urlData) {
     return dataJson;
 }
 const incisos = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json")
-const getIncisos = x => `<div class="respuesta" onclick='renderIncisoTable(${x});'>${incisos[parseInt(x)][12]}</div>`;
+const getIncisos = x => `<div class="respuesta" onclick='renderIncisoTable(${x});'>${incisos[parseInt(x)][0]} ${incisos[parseInt(x)][12]}</div>`;
 
 function query2(requestBody){
     let salida = "error"
@@ -96,18 +98,33 @@ const errores = {"Task not found for this model":"No se encontro el modelo",
             }
 
 
+function cleanListaIndecisos(salida){
+    for (let index = 0; index < 100; index++) {        
+        lista_incisos = salida.split("Answer:{")[1].split("}")[index].replace(/[^,\d]/g, '').split(",").filter(x => x !== "");
+        if(lista_incisos.length > 0){
+            console.log(lista_incisos)
+            return lista_incisos;
+        }
+    }
+    return [];
+}
+
+
 function getBotResponse(input) {
     //return "Given the question delimited by triple backticks ```{jueces}```, what is the answer? Answer:{ Encontrado en los incisos:  223,333,468,469,471,476,478,484,490,494,497,498,500,503,505,508,509,510,511,512,35,65,247,461,488,520,528,543}"
     input = input.toLowerCase();
+    GLOBALPALABRA = input;
     let inputData = inputData2(input);
     let salida = query2(inputData);
     let lista_incisos;
     //console.log(salida.split("Answer:{")[1].split("}")[1].replace(/[^,\d]/g, '').split(","))
     try{
-        lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
+        //lista_incisos = salida.split("Answer:{")[1].split("}")[0].replace(/[^,\d]/g, '').split(",");
+        lista_incisos = cleanListaIndecisos(salida)
     }catch(error){
         try {
             lista_incisos = salida.split("Answer:{")[1].split("}")[1].replace(/[^,\d]/g, '').split(",");
+            console.log(lista_incisos)
         } catch (error) {
             return errores[salida];
         }        
@@ -118,6 +135,7 @@ function getBotResponse(input) {
     if(lista_incisos.length == 0){
         return "Aun estamos trabajando, pero no pudimos encontrar tu concepto..."
     }
-
     return "Encontrado en : <div class='respuesta_padre'>"+lista_incisos.map(getIncisos).join(" ").replaceAll("Nº"," Inciso")+"</div>";
 }
+
+query2("hola");
