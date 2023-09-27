@@ -19,7 +19,7 @@ function query2(requestBody){
     let salida = "error"
     $.ajax({
         //url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm', // Reemplaza con la URL de la API que deseas consultar
-        url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm_tilde', 
+        url: 'https://api-inference.huggingface.co/models/lmonsalve/Contitucion-15_lemm_tilde_interseccion', 
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify(requestBody),
@@ -115,6 +115,7 @@ function getBotResponse(input) {
     input = input.toLowerCase();
     GLOBALPALABRA = input;
     let inputData = inputData2(input);
+    console.log(inputData)
     let salida = query2(inputData);
     let lista_incisos;
     //console.log(salida.split("Answer:{")[1].split("}")[1].replace(/[^,\d]/g, '').split(","))
