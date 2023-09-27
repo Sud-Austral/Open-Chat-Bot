@@ -130,55 +130,56 @@
 <!-- jquery 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
 
-
+<!--script custom-->
 <script src="static/scripts/responses.js"></script>
-
 <script src="static/scripts/chat.js"></script>
+<!---->
+<!--Boostrap-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!---->
+<!--Custom Script-->
+<script>
+    function getData(urlData) {
+        let rawData;
+        $.get({
+            url: urlData,
+            success: data => rawData = data, 
+            error: () => console.log("No File in " + urlData),       
+            async: false
+        });            
+        let dataJson = rawData? JSON.parse(rawData): null;
+        return dataJson;
+    };
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function getData(urlData) {
-            let rawData;
-            $.get({
-                url: urlData,
-                success: data => rawData = data, 
-                error: () => console.log("No File in " + urlData),       
-                async: false
-            });
-              
-            let dataJson = rawData? JSON.parse(rawData): null;
-            return dataJson;
-            }
-        const incisosTable = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json");
-        
-        const getIncisosTable = x => incisosTable[parseInt(x)];
-        function renderIncisoTable(id){
-            let inciso = getIncisosTable(id);
-            for (let index = 1; index < 16; index++) {                
-                $("#id" + index).text(inciso[index - 1])    
-            }
-            console.log(GLOBALPALABRA)
-            let arrayRespuesta = $("#id7").text().split(" ").map(element => {
-                if(element.toLowerCase() == GLOBALPALABRA){
-                    element = `<b id="palabraDestacada" style="color:red">${element}</b>`
-                }
-                return element;
-            });
-            $("#id7").html(arrayRespuesta.join(" "));
-            var elemento = document.getElementById("palabraDestacada");
-            if (elemento) {
-                elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-
+    const incisosTable = getData("https://raw.githubusercontent.com/Sud-Austral/IA_1/main/incisos.json");
+    const getIncisosTable = x => incisosTable[parseInt(x)];
+    function renderIncisoTable(id){
+        let inciso = getIncisosTable(id);
+        for (let index = 1; index < 16; index++) {                
+            $("#id" + index).text(inciso[index - 1])    
         }
-            
-        </script>
-        <style>
-            #id7 {
-                color: rgb(8, 24, 197);
-                font-weight: bold;
-                font-size: 1.2em;
+        console.log(GLOBALPALABRA)
+        let arrayRespuesta = $("#id7").text().split(" ").map(element => {
+            if(element.toLowerCase() == GLOBALPALABRA){
+                element = `<b id="palabraDestacada" style="color:red">${element}</b>`
             }
-        </style>
+            return element;
+        });
+        $("#id7").html(arrayRespuesta.join(" "));
+        var elemento = document.getElementById("palabraDestacada");
+        if (elemento) {
+            elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }        
+</script>
+
+<!---->
+<style>
+    #id7 {
+        color: rgb(8, 24, 197);
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+</style>
 </html>
